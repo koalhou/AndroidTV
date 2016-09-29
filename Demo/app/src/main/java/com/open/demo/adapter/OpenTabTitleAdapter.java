@@ -1,12 +1,5 @@
 package com.open.demo.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.open.androidtvwidget.adapter.BaseTabTitleAdapter;
-import com.open.androidtvwidget.view.TextViewWithTTF;
-import com.open.demo.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -14,14 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.open.androidtvwidget.adapter.BaseTabTitleAdapter;
+import com.open.androidtvwidget.view.TextViewWithTTF;
+import com.open.demo.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 	private List<String> titleList = new ArrayList<String>();
 
 	public OpenTabTitleAdapter() {
-			titleList.add("推荐");
-			titleList.add("电影");
-			titleList.add("电视剧");
-			titleList.add("设置");
+
+			titleList.add("直播");
+			titleList.add("点播");
+			titleList.add("会员中心");
+//			titleList.add("会员中心");
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 			add(R.id.title_bar1);
 			add(R.id.title_bar2);
 			add(R.id.title_bar3);
-			add(R.id.title_bar4);
+//			add(R.id.title_bar4);
 		}
 	};
 

@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class  DemoRecyclerviewActivity extends Activity implements RecyclerViewTV.OnItemListener {
 
-    private Context mContext;
+    private Context mContext; 
     private RecyclerViewTV left_menu_rv; // 左侧菜单.
     private RecyclerViewTV mRecyclerView;
     private MainUpView mainUpView1;
