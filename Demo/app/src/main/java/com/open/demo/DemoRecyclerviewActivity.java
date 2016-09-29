@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author hailongqiu
  */
-public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV.OnItemListener {
+public class  DemoRecyclerviewActivity extends Activity implements RecyclerViewTV.OnItemListener {
 
     private Context mContext;
     private RecyclerViewTV left_menu_rv; // 左侧菜单.
