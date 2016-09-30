@@ -36,7 +36,7 @@ import java.util.List;
 public class DemoViewPagerActivity extends Activity implements OnTabSelectListener {
 
     private List<View> viewList;// view数组
-    private View view1, view2, view3, view4;
+    private View view1, view2, view3;
     ViewPager viewpager;
     OpenTabHost mOpenTabHost;
     OpenTabTitleAdapter mOpenTabTitleAdapter;
@@ -85,12 +85,12 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         view1 = inflater.inflate(R.layout.test_page1, null);
         view2 = inflater.inflate(R.layout.test_page2, null); // gridview demo.
         view3 = inflater.inflate(R.layout.test_page3, null);
-        view4 = inflater.inflate(R.layout.test_page4, null);
+//        view4 = inflater.inflate(R.layout.test_page4, null);
         viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
-        viewList.add(view4);
+//        viewList.add(view4);
         // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
         for (View view : viewList) {
             float density = getResources().getDisplayMetrics().density;

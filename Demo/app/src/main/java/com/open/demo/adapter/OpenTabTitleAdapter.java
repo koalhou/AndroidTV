@@ -18,11 +18,10 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 	private List<String> titleList = new ArrayList<String>();
 
 	public OpenTabTitleAdapter() {
-
 			titleList.add("直播");
 			titleList.add("点播");
 			titleList.add("会员中心");
-//			titleList.add("会员中心");
+//			titleList.add("设置");
 	}
 
 	@Override

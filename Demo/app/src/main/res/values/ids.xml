@@ -4,7 +4,7 @@
     <item type="id"  name="title_bar1" />
     <item type="id"  name="title_bar2" />
     <item type="id"  name="title_bar3" />
-    <item type="id"  name="title_bar4" />
+    <!--<item type="id"  name="title_bar4" />-->
     
     <!-- 菜单ID -->
     <item type="id" name="menu_1_1"></item>

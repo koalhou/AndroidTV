@@ -77,19 +77,19 @@ public class MainActivity extends Activity implements OnClickListener {
                 mOldFocus = newFocus; // 4.3以下需要自己保存.
                 // 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
                 if (newFocus != null) {
-//                    testTopDemo(newFocus, scale);
+                    testTopDemo(newFocus, scale);
                 }
             }
         });
         // test demo.
-//        gridview_lay = findViewById(R.id.gridview_lay);
-//        gridview_lay.setOnClickListener(this);
-//        findViewById(R.id.listview_lay).setOnClickListener(this);
-//        findViewById(R.id.keyboard_lay).setOnClickListener(this);
+        gridview_lay = findViewById(R.id.gridview_lay);
+        gridview_lay.setOnClickListener(this);
+        findViewById(R.id.listview_lay).setOnClickListener(this);
+        findViewById(R.id.keyboard_lay).setOnClickListener(this);
         findViewById(R.id.viewpager_lay).setOnClickListener(this);
-//        findViewById(R.id.effect_rlay).setOnClickListener(this);
-//        findViewById(R.id.menu_rlayt).setOnClickListener(this);
-//        findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
+        findViewById(R.id.effect_rlay).setOnClickListener(this);
+        findViewById(R.id.menu_rlayt).setOnClickListener(this);
+        findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
         /**
          * 尽量不要使用鼠标. !!!! 如果使用鼠标，自己要处理好焦点问题.(警告)
          */
@@ -122,21 +122,22 @@ public class MainActivity extends Activity implements OnClickListener {
      * https://raw.githubusercontent.com/FrozenFreeFall/ImageSaveHttp/master/
      * chaochupingm%20.jpg
      */
-//    public void testTopDemo(View newView, float scale) {
-//        // 测试第一个小人放大的效果.
-//        if (newView.getId() == R.id.gridview_lay) { // 小人在外面的测试.
-//            RectF rectf = new RectF(getDimension(R.dimen.w_7), -getDimension(R.dimen.h_63), getDimension(R.dimen.w_7), getDimension(R.dimen.h_30));
-//            mOpenEffectBridge.setDrawUpRectPadding(rectf); // 设置移动边框间距，不要被挡住了。
-//            mOpenEffectBridge.setDrawShadowRectPadding(rectf); // 设置阴影边框间距，不要被挡住了。
-//            mOpenEffectBridge.setDrawUpRectEnabled(false); // 让移动边框绘制在小人的下面.
-//            test_top_iv.animate().scaleX(scale).scaleY(scale).setDuration(100).start(); // 让小人超出控件.
-//        } else { // 其它的还原.
-//            mOpenEffectBridge.setDrawUpRectPadding(0);
-//            mOpenEffectBridge.setDrawShadowPadding(0);
-//            mOpenEffectBridge.setDrawUpRectEnabled(true);
-//            test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start(); // 让小人超出控件.
-//        }
-//    }
+    public void testTopDemo(View newView, float scale) {
+        // 测试第一个小人放大的效果.
+        if (newView.getId() == R.id.gridview_lay) { // 小人在外面的测试.
+            RectF rectf = new RectF(getDimension(R.dimen.w_7), -getDimension(R.dimen.h_63), getDimension(R.dimen.w_7),
+                    getDimension(R.dimen.h_30));
+            mOpenEffectBridge.setDrawUpRectPadding(rectf); // 设置移动边框间距，不要被挡住了。
+            mOpenEffectBridge.setDrawShadowRectPadding(rectf); // 设置阴影边框间距，不要被挡住了。
+            mOpenEffectBridge.setDrawUpRectEnabled(false); // 让移动边框绘制在小人的下面.
+            test_top_iv.animate().scaleX(scale).scaleY(scale).setDuration(100).start(); // 让小人超出控件.
+        } else { // 其它的还原.
+            mOpenEffectBridge.setDrawUpRectPadding(0);
+            mOpenEffectBridge.setDrawShadowPadding(0);
+            mOpenEffectBridge.setDrawUpRectEnabled(true);
+            test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start(); // 让小人超出控件.
+        }
+    }
 
     public float getDimension(int id) {
         return getResources().getDimension(id);
@@ -146,33 +147,33 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-//            case R.id.gridview_lay:
-//                showMsg("Gridview demo test");
-//                startActivity(new Intent(getApplicationContext(), DemoGridViewActivity.class));
-//                break;
-//            case R.id.listview_lay:
-//                showMsg("Listview demo test");
-//                startActivity(new Intent(getApplicationContext(), DemoListViewActivity.class));
-//                break;
-//            case R.id.keyboard_lay:
-//                showMsg("键盘 demo test");
-//                startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
-//                break;
+            case R.id.gridview_lay:
+                showMsg("Gridview demo test");
+                startActivity(new Intent(getApplicationContext(), DemoGridViewActivity.class));
+                break;
+            case R.id.listview_lay:
+                showMsg("Listview demo test");
+                startActivity(new Intent(getApplicationContext(), DemoListViewActivity.class));
+                break;
+            case R.id.keyboard_lay:
+                showMsg("键盘 demo test");
+                startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
+                break;
             case R.id.viewpager_lay: // viewpager页面切换测试.
                 showMsg("ViewPager页面切换测试");
                 startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
                 break;
-//            case R.id.effect_rlay:
-//                showMsg("Effect动画切换测试");
-//                switchNoDrawBridgeVersion();
-//                break;
-//            case R.id.menu_rlayt: // 菜单测试.
-//                showMsg("菜单测试");
-//                startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
-//                break;
-//            case R.id.recyclerview_rlayt:
-//                showMsg("recyclerview测试");
-//                startActivity(new Intent(getApplicationContext(), DemoRecyclerviewActivity.class));
+            case R.id.effect_rlay:
+                showMsg("Effect动画切换测试");
+                switchNoDrawBridgeVersion();
+                break;
+            case R.id.menu_rlayt: // 菜单测试.
+                showMsg("菜单测试");
+                startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
+                break;
+            case R.id.recyclerview_rlayt:
+                showMsg("recyclerview测试");
+                startActivity(new Intent(getApplicationContext(), DemoRecyclerviewActivity.class));
             default:
                 break;
         }
