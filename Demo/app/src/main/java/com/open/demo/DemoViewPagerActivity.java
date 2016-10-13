@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
+import android.webkit.WebView;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
@@ -52,9 +53,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_viewpager_activity);
         //
-//        WebView webView = (WebView) findViewById(R.id.webView1);
-//        webView.getSettings().setJavaScriptEnabled(true);
-//        webView.loadUrl("http://www.baidu.com");
+        WebView webView = (WebView) findViewById(R.id.webView1);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("http://www.baidu.com");
         OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
         // 初始化标题栏.
         initAllTitleBar();
