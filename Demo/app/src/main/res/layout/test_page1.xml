@@ -28,6 +28,7 @@
                 android:layout_marginLeft="@dimen/w_96"
                 android:layout_marginTop="@dimen/h_204"
                 android:clickable="true"
+
                 android:focusable="true"
                 android:nextFocusUp="@+id/title_bar1"
                 android:src="@drawable/mainview_cloudlist"
