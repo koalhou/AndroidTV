@@ -70,8 +70,7 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 		final String name = tabName;
 		View viewC = View.inflate(context, R.layout.tab_view_indicator_item, null);
 		TextViewWithTTF view = (TextViewWithTTF) viewC.findViewById(R.id.tv_tab_indicator);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,	ViewGroup.LayoutParams.WRAP_CONTENT);
 		lp.setMargins(20, 0, 20, 0);
 		view.setLayoutParams(lp);
 

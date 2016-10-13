@@ -27,6 +27,7 @@ import com.open.demo.adapter.OpenTabTitleAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * ViewPager demo：
  * 注意标题栏和viewpager的焦点控制.(在XML布局中控制了, ids)
@@ -51,6 +52,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_viewpager_activity);
         //
+//        WebView webView = (WebView) findViewById(R.id.webView1);
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.loadUrl("http://www.baidu.com");
         OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
         // 初始化标题栏.
         initAllTitleBar();
@@ -58,6 +62,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         initAllViewPager();
         // 初始化移动边框.
         initMoveBridge();
+//        ReflectItemView riv = (ReflectItemView) findViewById(R.id.page1_item4);
+//        riv.setDrawShape();
+
     }
 
     private void initMoveBridge() {
@@ -97,6 +104,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
             SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
             shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
         }
+
         //
         viewpager.setAdapter(new DemoPagerAdapter());
         // 全局焦点监听. (这里只是demo，为了方便这样写，你可以不这样写)
