@@ -12,4 +12,5 @@
     <item type="id" name="menu_1_3"></item>
     <item type="id" name="menu_1_4"></item>
     <item type="id" name="menu_1_5"></item>
+    <item name="action_settings" type="id" />
 </resources>

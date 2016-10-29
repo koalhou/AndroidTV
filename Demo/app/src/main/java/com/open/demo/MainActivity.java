@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +33,19 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
+//        startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
         super.onCreate(savedInstanceState);
         OPENLOG.initTag("hailongqiu", true); // 开启log输出.
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

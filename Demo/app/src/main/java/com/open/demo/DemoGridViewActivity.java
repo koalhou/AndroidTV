@@ -21,9 +21,13 @@ package com.open.demo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,17 +38,21 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.view.GridViewTV;
 import com.open.androidtvwidget.view.MainUpView;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * GridView Demo测试.
@@ -57,13 +65,27 @@ public class DemoGridViewActivity extends Activity {
     private GridViewTV gridView;
     private GridViewAdapter mAdapter;
     private int mSavePos = -1;
-    private int mCount = 50;
+//    private int mCount = 50;
+
+    public static final String PlayList_ID = "AIzaSyAP1H0PtjMyfu1FZZs10-TEklKgesvEpQw";
+
+
+    private static List<String> playList= new ArrayList<String>();
+
+
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_grid_view);
 
+        initPlaylist();
         gridView = (GridViewTV) findViewById(R.id.gridView);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
         // 建议使用 NoDraw.
@@ -75,7 +97,7 @@ public class DemoGridViewActivity extends Activity {
         // 移动方框缩小的距离.
         mainUpView1.setDrawUpRectPadding(new Rect(10, 10, 10, -55));
         // 加载数据.
-        getData(200);
+        getData(playList.size());
         //
         updateGridViewAdapter();
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -100,15 +122,47 @@ public class DemoGridViewActivity extends Activity {
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mFindhandler.removeCallbacksAndMessages(null);
-                mSavePos = position; // 保存原来的位置(不要按照我的抄，只是DEMO)
-                initGridViewData(new Random().nextInt(3));
-                mFindhandler.sendMessageDelayed(mFindhandler.obtainMessage(), 111);
-                Toast.makeText(getApplicationContext(), "GridView Item " + position + " pos:" + mSavePos, Toast.LENGTH_LONG).show();
+//                mFindhandler.removeCallbacksAndMessages(null);
+//                mSavePos = position; // 保存原来的位置(不要按照我的抄，只是DEMO)
+//                initGridViewData(new Random().nextInt(3));
+//                mFindhandler.sendMessageDelayed(mFindhandler.obtainMessage(), 111);
+//                Toast.makeText(getApplicationContext(), "GridView Item " + position + " pos:" + mSavePos, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getApplicationContext(), YouT.class);
+                i.putExtra("key",playList.get(position));
+                startActivity(i);
             }
         });
-        initGridViewData(new Random().nextInt(3));
+//        initGridViewData(new Random().nextInt(3));
+
         mFirstHandler.sendMessageDelayed(mFirstHandler.obtainMessage(), 188);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void initPlaylist() {
+        playList.add("xyzorCtINqg");
+        playList.add("tSdudfIEFFs");
+        playList.add("mGYsO8rcIUo");
+        playList.add("kwQ9gPsmHHs");
+        playList.add("mkEF1fNcCWI");
+        playList.add("9Xy7HN05gfc");
+        playList.add("idXTniucGG8");
+        playList.add("3XqWpu8mPU0");
+        playList.add("jxz8nCSoagA");
+        playList.add("tj9e-VZ8obw");
+        playList.add("3qaNY5Ah9xk");
+        playList.add("A2HzFlpMxCE");
+        playList.add("CHl3OQsLS90");
+        playList.add("4xfoKrhc0YI");
+        playList.add("GhEH9SqJ4W4");
+        playList.add("D6xqphLVHkY");
+        playList.add("XlLjAsV3GDE");
+        playList.add("cs_c30qX7uM");
+        playList.add("exW8fOGXtrk");
+        playList.add("B9rESA2u56Y");
+        playList.add("e8QplC_nENk");
+        playList.add("eYtvN9KULWU");
     }
 
     // 延时请求初始位置的item.
@@ -130,28 +184,28 @@ public class DemoGridViewActivity extends Activity {
         }
     };
 
-    private void initGridViewData(int position) {
-        String text = "position:" + position;
-        // 测试数据更新.
-        if (position == 0) {
-            mCount += 10;
-            getData(mCount);
-            updateGridViewAdapter();
-            text += "-->更新数据3个";
-        } else if (position == 1) {
-            mCount += 20;
-            getData(mCount);
-            updateGridViewAdapter();
-            text += "-->更新数据100个";
-        } else if (position == 2) {
-            mCount += 30;
-            getData(mCount);
-            updateGridViewAdapter();
-            text += "-->更新数据2000个";
-        } else {
-            // ... ...
-        }
-    }
+//    private void initGridViewData(int position) {
+//        String text = "position:" + position;
+//        // 测试数据更新.
+//        if (position == 0) {
+//            mCount += 10;
+//            getData(mCount);
+//            updateGridViewAdapter();
+//            text += "-->更新数据3个";
+//        } else if (position == 1) {
+//            mCount += 20;
+//            getData(mCount);
+//            updateGridViewAdapter();
+//            text += "-->更新数据100个";
+//        } else if (position == 2) {
+//            mCount += 30;
+//            getData(mCount);
+//            updateGridViewAdapter();
+//            text += "-->更新数据2000个";
+//        } else {
+//            // ... ...
+//        }
+//    }
 
     public List<String> getData(int count) {
         data = new ArrayList<String>();
@@ -166,6 +220,42 @@ public class DemoGridViewActivity extends Activity {
         mAdapter = new GridViewAdapter(this, data);
         gridView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("DemoGridView Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
     ///// Adapter 类 start start //////////
@@ -201,11 +291,33 @@ public class DemoGridViewActivity extends Activity {
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.item_gridview, parent, false);
                 convertView.setTag(new ViewHolder(convertView));
+                ImageView iv = (ImageView)convertView.findViewById(R.id.imgView);
+
+
+                new DownImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg").run();
+//                Bitmap b = (Bitmap) di.doInBackground(new Object[]{"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg"});
+//                iv.setImageBitmap(b);
+//                iv.setImageBitmap(getWebPicture("http://img.youtube.com/vi/"+playList.get(position)+"/0.jpg"));
+//                Uri uri = Uri.parse();
+//                iv.setImageURI(uri);
+//                iv.setDrawingCacheEnabled(true);
+//                WebView webView1 = (WebView) convertView.findViewById(R.id.webView0);
+//                webView1.getSettings().setJavaScriptEnabled(true);
+//                webView1.setWebViewClient(new WebViewClient(){
+//                    @Override
+//                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                        view.loadUrl(url);
+//                        return true;
+//                    }
+//                });
+////        webView.loadUrl("http://www.baidu.com");
+//                webView1.loadUrl("https://www.youtube.com/watch?v=AKyJyBkaRMg");
             }
             viewHolder = (ViewHolder) convertView.getTag();
             bindViewData(position, viewHolder);
             return convertView;
         }
+
 
         private void bindViewData(int position, ViewHolder viewHolder) {
             String title = mDatas.get(position);
@@ -222,7 +334,30 @@ public class DemoGridViewActivity extends Activity {
             }
         }
     }
+    class DownImage extends Thread {
 
+        private ImageView imageView;
+        private  String url;
+
+        public DownImage(ImageView imageView, String url) {
+            this.imageView = imageView;
+            this.url = url;
+        }
+        @Override
+        public void run(){
+            Bitmap bitmap = null;
+            try {
+                //加载一个网络图片
+                InputStream is = new URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(is);
+//                bitmap = getWebPicture(url);
+                imageView.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
     ///// Adapter 类 end end //////////
 
 }

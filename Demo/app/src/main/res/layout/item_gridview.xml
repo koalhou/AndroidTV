@@ -5,11 +5,29 @@
     android:layout_height="300dp"
     android:orientation="vertical">
 
+    <!--<WebView-->
+        <!--android:id="@+id/webView0"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/grid_view_item_test"-->
+        <!--/>-->
+<!--
     <ImageView
+        android:id="@+id/imgView"
         android:layout_width="200dp"
         android:layout_height="250dp"
         android:scaleType="fitXY"
         android:src="@drawable/grid_view_item_test" >
+
+    </ImageView>-->
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:scaleType="fitXY" >
+
     </ImageView>
 
     <TextView

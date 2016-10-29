@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
-import android.webkit.WebView;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
@@ -53,9 +52,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_viewpager_activity);
         //
-        WebView webView = (WebView) findViewById(R.id.webView1);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://www.baidu.com");
+//        WebView webView = (WebView) findViewById(R.id.webView1);
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.loadUrl("http://www.baidu.com");
         OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
         // 初始化标题栏.
         initAllTitleBar();
@@ -100,11 +99,48 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         viewList.add(view3);
 //        viewList.add(view4);
         // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
-        for (View view : viewList) {
+//        for (View view : viewList) {
             float density = getResources().getDisplayMetrics().density;
-            SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
-            shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
-        }
+            SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view1.findViewById(R.id.test_hscroll);
+//        WebView webView1 = (WebView) shsv.findViewById(R.id.webView1);
+//        webView1.getSettings().setJavaScriptEnabled(true);
+//        webView1.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView1.loadUrl("https://www.youtube.com/watch?v=AKyJyBkaRMg");
+//
+//        WebView webView2 = (WebView) shsv.findViewById(R.id.webView2);
+//        webView2.getSettings().setJavaScriptEnabled(true);
+//        webView2.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView2.loadUrl("https://www.youtube.com/watch?v=OxPv8mSTv9U");
+//
+//        WebView webView3 = (WebView) shsv.findViewById(R.id.webView3);
+//        webView3.getSettings().setJavaScriptEnabled(true);
+//        webView3.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView3.loadUrl("https://www.youtube.com/watch?v=hb2sAjxDQcQ");
+
+
+        shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
+//        }
 
         //
         viewpager.setAdapter(new DemoPagerAdapter());
