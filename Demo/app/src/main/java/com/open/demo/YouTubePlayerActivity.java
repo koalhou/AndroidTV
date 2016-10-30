@@ -14,12 +14,13 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.open.demo.config.Config;
 
 /**
  * Created by mac on 2016/10/18.
  */
 
-public class YouT extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private static final int RECOVERY_REQUEST = 1;
     private YouTubePlayerView youTubeView;

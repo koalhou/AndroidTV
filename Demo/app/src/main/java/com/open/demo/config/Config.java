@@ -1,4 +1,4 @@
-package com.open.demo;
+package com.open.demo.config;
 
 /**
  * Created by mac on 2016/10/18.

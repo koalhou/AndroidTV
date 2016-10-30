@@ -1,211 +1,329 @@
 package com.open.demo;
 
+import android.animation.Animator;
 import android.app.Activity;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.RectF;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.view.MotionEvent;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
-import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.utils.OPENLOG;
-import com.open.androidtvwidget.utils.Utils;
-import com.open.androidtvwidget.view.FrameMainLayout;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.androidtvwidget.view.OpenTabHost;
 import com.open.androidtvwidget.view.SmoothHorizontalScrollView;
+import com.open.androidtvwidget.view.TextViewWithTTF;
+import com.open.demo.adapter.OpenTabTitleAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DEMO测试.
  * xml布局中 clipChildren clipToPadding 不要忘记了，不然移动的边框无法显示出来的. (强烈注意)
  */
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OpenTabHost.OnTabSelectListener {
 
+    private List<View> viewList;// view数组
+    private View view1, view2, view3,view4;
+    ViewPager viewpager;
+    OpenTabHost mOpenTabHost;
+    OpenTabTitleAdapter mOpenTabTitleAdapter;
+    // 移动边框.
     MainUpView mainUpView1;
-    View test_top_iv;
-    OpenEffectBridge mOpenEffectBridge;
-    View mOldFocus; // 4.3以下版本需要自己保存.
+    EffectNoDrawBridge mEffectNoDrawBridge;
+    View mNewFocus;
+    View mOldView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads()
-                .detectDiskWrites()
-                .detectNetwork()
-                .penaltyLog()
-                .build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .penaltyDeath()
-                .build());
-//        startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
         super.onCreate(savedInstanceState);
-        OPENLOG.initTag("hailongqiu", true); // 开启log输出.
-        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        // WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.test_main);
-        SmoothHorizontalScrollView hscroll_view = (SmoothHorizontalScrollView) findViewById(R.id.hscroll_view);
-        hscroll_view.setFadingEdge((int)getDimension(R.dimen.w_100)); // 滚动窗口也需要适配.
+        setContentView(R.layout.demo_viewpager_activity);
         //
-        test_top_iv = findViewById(R.id.test_top_iv);
-        /* MainUpView 设置. */
-        mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-        // mainUpView1 = new MainUpView(this); // 手动添加(test)
-        // mainUpView1.attach2Window(this); // 手动添加(test)
-        mOpenEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
-        // 4.2 绘制有问题，所以不使用绘制边框.
-        // 也不支持倒影效果，绘制有问题.
-        // 请大家不要按照我这样写.
-        // 如果你不想放大小人超出边框(demo，张靓颖的小人)，可以不使用OpenEffectBridge.
-        // 我只是测试----DEMO.(建议大家使用 NoDrawBridge)
-        if (Utils.getSDKVersion() == 17) { // 测试 android 4.2版本.
-            switchNoDrawBridgeVersion();
-        } else { // 其它版本（android 4.3以上）.
-            mainUpView1.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
-            mainUpView1.setShadowResource(R.drawable.item_shadow); // 设置移动边框的阴影.
-        }
-        // mainUpView1.setUpRectResource(R.drawable.item_highlight); //
-        // 设置移动边框的图片.(test)
-        // mainUpView1.setDrawUpRectPadding(new Rect(0, 0, 0, -26)); //
-        // 设置移动边框的距离.
-        // mainUpView1.setDrawShadowPadding(0); // 阴影图片设置距离.
-        // mOpenEffectBridge.setTranDurAnimTime(500); // 动画时间.
+//        WebView webView = (WebView) findViewById(R.id.webView1);
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.loadUrl("http://www.baidu.com");
+        OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
+        // 初始化标题栏.
+        initAllTitleBar();
+        // 初始化viewpager.
+        initAllViewPager();
+        // 初始化移动边框.
+        initMoveBridge();
+//        ReflectItemView riv = (ReflectItemView) findViewById(R.id.page1_item4);
+//        riv.setDrawShape();
 
-        FrameMainLayout main_lay11 = (FrameMainLayout) findViewById(R.id.main_lay);
-        main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void initMoveBridge() {
+        float density = getResources().getDisplayMetrics().density;
+        mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
+        mEffectNoDrawBridge = new EffectNoDrawBridge();
+        mainUpView1.setEffectBridge(mEffectNoDrawBridge);
+        mEffectNoDrawBridge.setUpRectResource(R.drawable.white_light_10); // 设置移动边框图片.
+        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
+                getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
+        mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
+    }
+
+    private void initAllTitleBar() {
+        mOpenTabHost = (OpenTabHost) findViewById(R.id.openTabHost);
+        mOpenTabTitleAdapter = new OpenTabTitleAdapter();
+        mOpenTabHost.setOnTabSelectListener(this);
+        mOpenTabHost.setAdapter(mOpenTabTitleAdapter);
+    }
+
+    private void initAllViewPager() {
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        //
+        LayoutInflater inflater = getLayoutInflater();
+        view1 = inflater.inflate(R.layout.test_page1, null);
+        view2 = inflater.inflate(R.layout.test_page2, null); // gridview demo.
+        view3 = inflater.inflate(R.layout.test_page3, null);
+        view4 = inflater.inflate(R.layout.test_page4, null);
+        viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
+        viewList.add(view1);
+        viewList.add(view2);
+        viewList.add(view3);
+        viewList.add(view4);
+        // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
+//        for (View view : viewList) {
+        float density = getResources().getDisplayMetrics().density;
+        SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view1.findViewById(R.id.test_hscroll);
+//        WebView webView1 = (WebView) shsv.findViewById(R.id.webView1);
+//        webView1.getSettings().setJavaScriptEnabled(true);
+//        webView1.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView1.loadUrl("https://www.youtube.com/watch?v=AKyJyBkaRMg");
+//
+//        WebView webView2 = (WebView) shsv.findViewById(R.id.webView2);
+//        webView2.getSettings().setJavaScriptEnabled(true);
+//        webView2.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView2.loadUrl("https://www.youtube.com/watch?v=OxPv8mSTv9U");
+//
+//        WebView webView3 = (WebView) shsv.findViewById(R.id.webView3);
+//        webView3.getSettings().setJavaScriptEnabled(true);
+//        webView3.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+////        webView.loadUrl("http://www.baidu.com");
+//        webView3.loadUrl("https://www.youtube.com/watch?v=hb2sAjxDQcQ");
+
+
+        shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
+//        }
+
+        //
+        viewpager.setAdapter(new DemoPagerAdapter());
+        // 全局焦点监听. (这里只是demo，为了方便这样写，你可以不这样写)
+        viewpager.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
             @Override
-            public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
-                if (newFocus != null)
-                    newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
-                float scale = 1.2f;
-                mainUpView1.setFocusView(newFocus, mOldFocus, scale);
-                mOldFocus = newFocus; // 4.3以下需要自己保存.
-                // 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
-                if (newFocus != null) {
-                    testTopDemo(newFocus, scale);
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                // 判断 : 避免焦点框跑到标题栏. (只是demo，你自己处理逻辑)
+                // 你也可以让标题栏放大，有移动边框.
+                if (newFocus != null && !(newFocus instanceof TextViewWithTTF)) {
+                    mEffectNoDrawBridge.setVisibleWidget(false);
+                    mNewFocus = newFocus;
+                    mOldView = oldFocus;
+                    mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
+                    // 让被挡住的焦点控件在前面.
+                    newFocus.bringToFront();
+                    OPENLOG.D("addOnGlobalFocusChangeListener");
+                } else { // 标题栏处理.
+                    mNewFocus = null;
+                    mOldView = null;
+                    mainUpView1.setUnFocusView(oldFocus);
+                    mEffectNoDrawBridge.setVisibleWidget(true);
                 }
             }
         });
-        // test demo.
-        gridview_lay = findViewById(R.id.gridview_lay);
-        gridview_lay.setOnClickListener(this);
-        findViewById(R.id.listview_lay).setOnClickListener(this);
-        findViewById(R.id.keyboard_lay).setOnClickListener(this);
-        findViewById(R.id.viewpager_lay).setOnClickListener(this);
-        findViewById(R.id.effect_rlay).setOnClickListener(this);
-        findViewById(R.id.menu_rlayt).setOnClickListener(this);
-        findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
-        /**
-         * 尽量不要使用鼠标. !!!! 如果使用鼠标，自己要处理好焦点问题.(警告)
-         */
-//		main_lay11.setOnHoverListener(new OnHoverListener() {
-//			@Override
-//			public boolean onHover(View v, MotionEvent event) {
-//				mainUpView1.setVisibility(View.INVISIBLE);
-//				return true;
-//			}
-//		});
-        //
-        for (int i = 0; i < main_lay11.getChildCount(); i++) {
-            main_lay11.getChildAt(i).setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-//						v.performClick();
-                        v.requestFocus();
-                    }
-                    return false;
+        viewpager.setOffscreenPageLimit(4);
+        viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                switchTab(mOpenTabHost, position);
+                OPENLOG.D("onPageSelected position:" + position);
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // viewPager 正在滚动中.
+                OPENLOG.D("onPageScrolled position:" + position + " positionOffset:" + positionOffset);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                switch (state) {
+                    case ViewPager.SCROLL_STATE_IDLE: // viewpager 滚动结束.
+                        mainUpView1.setFocusView(mNewFocus, mOldView, 1.2f);
+                        // 监听动画事件.
+                        mEffectNoDrawBridge.setOnAnimatorListener(new OpenEffectBridge.NewAnimatorListener() {
+                            @Override
+                            public void onAnimationStart(OpenEffectBridge bridge, View view, Animator animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(OpenEffectBridge bridge, View view, Animator animation) {
+                                // 动画结束的时候恢复原来的时间. (这里只是DEMO)
+                                mEffectNoDrawBridge.setTranDurAnimTime(OpenEffectBridge.DEFAULT_TRAN_DUR_ANIM);
+                            }
+                        });
+                        // 让被挡住的焦点控件在前面.
+                        if (mNewFocus != null)
+                            mNewFocus.bringToFront();
+                        OPENLOG.D("SCROLL_STATE_IDLE");
+                        break;
+                    case ViewPager.SCROLL_STATE_DRAGGING:
+                        OPENLOG.D("SCROLL_STATE_DRAGGING");
+                        break;
+                    case ViewPager.SCROLL_STATE_SETTLING: // viewPager开始滚动.
+                        mEffectNoDrawBridge.clearAnimator(); // 清除之前的动画.
+                        mEffectNoDrawBridge.setTranDurAnimTime(0); // 避免边框从其它地方跑出来.
+                        OPENLOG.D("SCROLL_STATE_SETTLING");
+                        break;
                 }
-            });
-        }
-    }
-
-    public View gridview_lay;
-
-    /**
-     * 这是一个测试DEMO，希望对API了解下再使用. 这种DEMO是为了实现这个效果:
-     * https://raw.githubusercontent.com/FrozenFreeFall/ImageSaveHttp/master/
-     * chaochupingm%20.jpg
-     */
-    public void testTopDemo(View newView, float scale) {
-        // 测试第一个小人放大的效果.
-        if (newView.getId() == R.id.gridview_lay) { // 小人在外面的测试.
-            RectF rectf = new RectF(getDimension(R.dimen.w_7), -getDimension(R.dimen.h_63), getDimension(R.dimen.w_7),
-                    getDimension(R.dimen.h_30));
-            mOpenEffectBridge.setDrawUpRectPadding(rectf); // 设置移动边框间距，不要被挡住了。
-            mOpenEffectBridge.setDrawShadowRectPadding(rectf); // 设置阴影边框间距，不要被挡住了。
-            mOpenEffectBridge.setDrawUpRectEnabled(false); // 让移动边框绘制在小人的下面.
-            test_top_iv.animate().scaleX(scale).scaleY(scale).setDuration(100).start(); // 让小人超出控件.
-        } else { // 其它的还原.
-            mOpenEffectBridge.setDrawUpRectPadding(0);
-            mOpenEffectBridge.setDrawShadowPadding(0);
-            mOpenEffectBridge.setDrawUpRectEnabled(true);
-            test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start(); // 让小人超出控件.
-        }
-    }
-
-    public float getDimension(int id) {
-        return getResources().getDimension(id);
+            }
+        });
+        // 初始化.
+        viewpager.setCurrentItem(0);
+        switchTab(mOpenTabHost, 0);
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.gridview_lay:
-                showMsg("Gridview demo test");
-                startActivity(new Intent(getApplicationContext(), DemoGridViewActivity.class));
-                break;
-            case R.id.listview_lay:
-                showMsg("Listview demo test");
-                startActivity(new Intent(getApplicationContext(), DemoListViewActivity.class));
-                break;
-            case R.id.keyboard_lay:
-                showMsg("键盘 demo test");
-                startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
-                break;
-            case R.id.viewpager_lay: // viewpager页面切换测试.
-                showMsg("ViewPager页面切换测试");
-                startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
-                break;
-            case R.id.effect_rlay:
-                showMsg("Effect动画切换测试");
-                switchNoDrawBridgeVersion();
-                break;
-            case R.id.menu_rlayt: // 菜单测试.
-                showMsg("菜单测试");
-                startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
-                break;
-            case R.id.recyclerview_rlayt:
-                showMsg("recyclerview测试");
-                startActivity(new Intent(getApplicationContext(), DemoRecyclerviewActivity.class));
-            default:
-                break;
+    public void onTabSelect(OpenTabHost openTabHost, View titleWidget, int position) {
+        if (viewpager != null) {
+            viewpager.setCurrentItem(position);
         }
     }
 
-    private void showMsg(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    /**
+     * demo (翻页的时候改变状态)
+     * 将标题栏的文字颜色改变. <br>
+     * 你可以写自己的东西，我这里只是DEMO.
+     */
+    public void switchTab(OpenTabHost openTabHost, int postion) {
+        List<View> viewList = openTabHost.getAllTitleView();
+        for (int i = 0; i < viewList.size(); i++) {
+            TextViewWithTTF view = (TextViewWithTTF) openTabHost.getTitleViewIndexAt(i);
+            if (view != null) {
+                Resources res = view.getResources();
+                if (res != null) {
+                    if (i == postion) {
+                        view.setTextColor(res.getColor(android.R.color.white));
+                        view.setTypeface(null, Typeface.BOLD);
+                        view.setSelected(true); // 为了显示 失去焦点，选中为 true的图片.
+                    } else {
+                        view.setTextColor(res.getColor(R.color.white_50));
+                        view.setTypeface(null, Typeface.NORMAL);
+                        view.setSelected(false);
+                    }
+                }
+            }
+        }
     }
 
-    private void switchNoDrawBridgeVersion() {
-        float density = getResources().getDisplayMetrics().density;
-        RectF rectf = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
-                getDimension(R.dimen.w_9) * density, getDimension(R.dimen.h_9) * density);
-        EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
-        effectNoDrawBridge.setTranDurAnimTime(200);
-//        effectNoDrawBridge.setDrawUpRectPadding(rectf);
-        mainUpView1.setEffectBridge(effectNoDrawBridge); // 4.3以下版本边框移动.
-        mainUpView1.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
-        mainUpView1.setDrawUpRectPadding(rectf); // 边框图片设置间距.
+    private float getDimension(int id) {
+        return getResources().getDimension(id);
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    /**
+     * viewpager 的 adpater.
+     */
+    class DemoPagerAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return viewList.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            return arg0 == arg1;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(viewList.get(position));
+        }
+
+        public Object instantiateItem(ViewGroup container, int position) {
+            container.addView(viewList.get(position));
+            return viewList.get(position);
+        }
+
     }
 
 }

@@ -48,6 +48,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.view.GridViewTV;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.demo.utils.AsyncTaskImageLoad;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -127,7 +128,7 @@ public class DemoGridViewActivity extends Activity {
 //                initGridViewData(new Random().nextInt(3));
 //                mFindhandler.sendMessageDelayed(mFindhandler.obtainMessage(), 111);
 //                Toast.makeText(getApplicationContext(), "GridView Item " + position + " pos:" + mSavePos, Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(), YouT.class);
+                Intent i = new Intent(getApplicationContext(), YouTubePlayerActivity.class);
                 i.putExtra("key",playList.get(position));
                 startActivity(i);
             }
@@ -292,9 +293,9 @@ public class DemoGridViewActivity extends Activity {
                 convertView = mInflater.inflate(R.layout.item_gridview, parent, false);
                 convertView.setTag(new ViewHolder(convertView));
                 ImageView iv = (ImageView)convertView.findViewById(R.id.imgView);
-
-
-                new DownImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg").run();
+//                iv.setImageBitmap(PicUtil.getbitmap("http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg"));
+                LoadImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg");
+//                new DownImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg").run();
 //                Bitmap b = (Bitmap) di.doInBackground(new Object[]{"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg"});
 //                iv.setImageBitmap(b);
 //                iv.setImageBitmap(getWebPicture("http://img.youtube.com/vi/"+playList.get(position)+"/0.jpg"));
@@ -318,6 +319,14 @@ public class DemoGridViewActivity extends Activity {
             return convertView;
         }
 
+        private void LoadImage(ImageView img, String path)
+        {
+            //异步加载图片资源
+            AsyncTaskImageLoad async=new AsyncTaskImageLoad(img);
+            //执行异步加载，并把图片的路径传送过去
+            async.execute(path);
+
+        }
 
         private void bindViewData(int position, ViewHolder viewHolder) {
             String title = mDatas.get(position);

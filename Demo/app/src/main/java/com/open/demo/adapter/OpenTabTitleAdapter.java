@@ -19,9 +19,9 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 
 	public OpenTabTitleAdapter() {
 			titleList.add("直播");
+			titleList.add("今日更新");
 			titleList.add("点播");
 			titleList.add("会员中心");
-//			titleList.add("设置");
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 			add(R.id.title_bar1);
 			add(R.id.title_bar2);
 			add(R.id.title_bar3);
-//			add(R.id.title_bar4);
+			add(R.id.title_bar4);
 		}
 	};
 
