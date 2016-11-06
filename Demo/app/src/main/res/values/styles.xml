@@ -20,5 +20,6 @@
         <item name="android:windowFullscreen">true</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
+    <style name="BlackNoBarsTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen"/>
+    <style name="BlackNoTitleBarTheme" parent="android:Theme.Black.NoTitleBar"/>
 </resources>

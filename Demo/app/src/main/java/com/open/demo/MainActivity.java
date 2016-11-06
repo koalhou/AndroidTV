@@ -54,12 +54,10 @@ public class MainActivity extends Activity implements OpenTabHost.OnTabSelectLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        startActivity(new Intent(getApplicationContext(), DemoGridViewActivity.class));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_viewpager_activity);
-        //
-//        WebView webView = (WebView) findViewById(R.id.webView1);
-//        webView.getSettings().setJavaScriptEnabled(true);
-//        webView.loadUrl("http://www.baidu.com");
+
         OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
         // 初始化标题栏.
         initAllTitleBar();
@@ -81,8 +79,7 @@ public class MainActivity extends Activity implements OpenTabHost.OnTabSelectLis
         mEffectNoDrawBridge = new EffectNoDrawBridge();
         mainUpView1.setEffectBridge(mEffectNoDrawBridge);
         mEffectNoDrawBridge.setUpRectResource(R.drawable.white_light_10); // 设置移动边框图片.
-        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
-                getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
+        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density, getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
         mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
     }
 
@@ -99,7 +96,7 @@ public class MainActivity extends Activity implements OpenTabHost.OnTabSelectLis
         LayoutInflater inflater = getLayoutInflater();
         view1 = inflater.inflate(R.layout.test_page1, null);
         view2 = inflater.inflate(R.layout.test_page2, null); // gridview demo.
-        view3 = inflater.inflate(R.layout.test_page3, null);
+        view3 = inflater.inflate(R.layout.demo_grid_view, null);
         view4 = inflater.inflate(R.layout.test_page4, null);
         viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
         viewList.add(view1);
@@ -107,50 +104,12 @@ public class MainActivity extends Activity implements OpenTabHost.OnTabSelectLis
         viewList.add(view3);
         viewList.add(view4);
         // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
-//        for (View view : viewList) {
         float density = getResources().getDisplayMetrics().density;
         SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view1.findViewById(R.id.test_hscroll);
-//        WebView webView1 = (WebView) shsv.findViewById(R.id.webView1);
-//        webView1.getSettings().setJavaScriptEnabled(true);
-//        webView1.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
-//                return true;
-//            }
-//        });
-////        webView.loadUrl("http://www.baidu.com");
-//        webView1.loadUrl("https://www.youtube.com/watch?v=AKyJyBkaRMg");
-//
-//        WebView webView2 = (WebView) shsv.findViewById(R.id.webView2);
-//        webView2.getSettings().setJavaScriptEnabled(true);
-//        webView2.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
-//                return true;
-//            }
-//        });
-////        webView.loadUrl("http://www.baidu.com");
-//        webView2.loadUrl("https://www.youtube.com/watch?v=OxPv8mSTv9U");
-//
-//        WebView webView3 = (WebView) shsv.findViewById(R.id.webView3);
-//        webView3.getSettings().setJavaScriptEnabled(true);
-//        webView3.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
-//                return true;
-//            }
-//        });
-////        webView.loadUrl("http://www.baidu.com");
-//        webView3.loadUrl("https://www.youtube.com/watch?v=hb2sAjxDQcQ");
-
 
         shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
-//        }
 
-        //
+
         viewpager.setAdapter(new DemoPagerAdapter());
         // 全局焦点监听. (这里只是demo，为了方便这样写，你可以不这样写)
         viewpager.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {

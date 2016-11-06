@@ -294,7 +294,7 @@ public class DemoGridViewActivity extends Activity {
                 convertView.setTag(new ViewHolder(convertView));
                 ImageView iv = (ImageView)convertView.findViewById(R.id.imgView);
 //                iv.setImageBitmap(PicUtil.getbitmap("http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg"));
-                LoadImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg");
+                LoadImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/0.jpg");
 //                new DownImage(iv,"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg").run();
 //                Bitmap b = (Bitmap) di.doInBackground(new Object[]{"http://img.youtube.com/vi/"+playList.get(position)+"/1.jpg"});
 //                iv.setImageBitmap(b);

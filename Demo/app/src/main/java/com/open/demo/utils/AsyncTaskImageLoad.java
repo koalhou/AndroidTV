@@ -22,10 +22,11 @@ public class AsyncTaskImageLoad extends AsyncTask<String, Integer, Bitmap> {
         Image=img;
     }
     //运行在子线程中
+    @Override
     protected Bitmap doInBackground(String... params) {
         try
         {
-            URL url=new URL(params[0]);
+            URL url = new URL(params[0]);
             HttpURLConnection conn=(HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5000);
@@ -43,6 +44,7 @@ public class AsyncTaskImageLoad extends AsyncTask<String, Integer, Bitmap> {
         return null;
     }
 
+    @Override
     protected void onPostExecute(Bitmap result)
     {
         if(Image!=null && result!=null) {
