@@ -95,8 +95,8 @@ public class MainActivity extends Activity implements OpenTabHost.OnTabSelectLis
         //
         LayoutInflater inflater = getLayoutInflater();
         view1 = inflater.inflate(R.layout.test_page1, null);
-        view2 = inflater.inflate(R.layout.test_page2, null); // gridview demo.
-        view3 = inflater.inflate(R.layout.demo_grid_view, null);
+        view2 = inflater.inflate(R.layout.demo_grid_view, null); // gridview demo.
+        view3 = inflater.inflate(R.layout.test_page3, null);
         view4 = inflater.inflate(R.layout.test_page4, null);
         viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
         viewList.add(view1);
